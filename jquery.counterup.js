@@ -2,6 +2,7 @@
  * jquery.counterup.js 2.1.0
  *
  * Copyright 2013, Benjamin Intal http://gambit.ph @bfintal
+ * https://github.com/elisent/jquery.counterup
  * Released under the GPL v2 License
  *
  * Amended by Jeremy Paris, Ciro Mattia Gonano and others
@@ -112,10 +113,31 @@
             };
 
             // Perform counts when the element gets into view
-            $this.waypoint(function (direction) {
-                counterUpper();
-                this.destroy(); //-- Waypoint 3.0 version of triggerOnce
-            }, {offset: counter.offset + "%", context: counter.context});
+            //$this.waypoint(function (direction) {
+                //counterUpper();
+                //this.destroy(); //-- Waypoint 3.0 version of triggerOnce
+            //}, {offset: counter.offset + "%", context: counter.context});
+
+            var ScrollMagicGlobalController = new ScrollMagic.Controller();
+
+            $this.each(function() {
+                var el = $(this),
+                    scene = new ScrollMagic.Scene({                        
+                        triggerElement: this,
+                        triggerHook: 0.7,
+                        duration: "50%",
+                        reverse: false
+                    })
+                    .on("start leave", function(event) {
+                        counterUpper();
+                        this.destroy();
+                    })
+                    .addTo(ScrollMagicGlobalController);
+
+                el.addClass("__done");
+            });
+
+
         });
 
     };
